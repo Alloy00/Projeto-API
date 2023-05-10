@@ -1,0 +1,66 @@
+{
+    "start_url": "/",
+    "background_color": "#ffffff",
+    "description": "CRUD em node.js sobre sneakers",
+    "display": "standalone",
+    "name": "sneakers",
+    "orientation": "portrait",
+    "short_name": "sneakers",
+    "id": "",
+    "theme_color": "#ff0000",
+    "categories": [
+      "sports",
+      "news"
+    ],
+    "icons": [
+      {
+        "src": "tenis.png"
+      },
+      {
+        "src": "/Icons/Assets.xcassets/AppIcon.appiconset/128.png",
+        "sizes": "128x128",
+        "type": "image/png"
+      },
+      {
+        "src": "/Icons/Assets.xcassets/AppIcon.appiconset/144.png",
+        "sizes": "144x144",
+        "type": "image/png"
+      },
+      {
+        "src": "/Icons/Assets.xcassets/AppIcon.appiconset/152.png",
+        "sizes": "152x152",
+        "type": "image/png"
+      },
+      {
+        "src": "/Icons/Assets.xcassets/AppIcon.appiconset/167.png",
+        "sizes": "167x167",
+        "type": "image/png"
+      },
+      {
+        "src": "/Icons/Assets.xcassets/AppIcon.appiconset/180.png",
+        "type": "image/png"
+      },
+      {
+        "src": "/Icons/Assets.xcassets/AppIcon.appiconset/196.png",
+        "sizes": "196x196",
+        "type": "image/png",
+        "purpose": "any maskable"
+      },
+      {
+        "src": "/Icons/Assets.xcassets/AppIcon.appiconset/256.png",
+        "sizes": "256x256",
+        "type": "image/png"
+      },
+      {
+        "src": "/Icons/Assets.xcassets/AppIcon.appiconset/512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ],
+    "shortcuts": [],
+    "lang": "pt",
+    "serviceworker": {
+      "src": "/service-worker.js",
+      "scope": "/"
+    }
+  }

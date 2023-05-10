@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Remover ID</title>
+  <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="/manifest.json">
+</head>
+<body>
+
+  <div class="navbar">
+    <div class="img" style="display: flex;" ><img src="tenis.png" style="max-width: 50px; max-height: 50px; margin-left: 2%;" alt="tenis logo"><p class="text">Sneakers</p></div>
+    <div class="buttons">
+      <a href="/home"><button class="button" id="showform">Adicionar Tênis</button></a>
+      <a href="/remove"><button class="button" id="removeform" >Remover Tênis</button></a>
+      <a href="/update"><button class="button" id="editform">Editar Tênis</button></a>
+    </div>
+  </div>
+
+  <h2>Listagem dos tênis</h2>
+  <ul id="tenisContainer"></ul>
+
+  
+
+  <div class="removeform">
+    <h1>Remover ID</h1>
+  <form id="removeForm">
+    <label for="id">ID:</label>
+    <input type="text" id="id" name="id">
+    <br>
+    <button type="submit">Remover</button>
+  </form>
+</div>
+
+  <script>
+    // Função para remover um ID
+    function removeID(event) {
+      event.preventDefault();
+
+      const form = document.getElementById('removeForm');
+      const id = form.id.value;
+
+      fetch(`http://localhost:3000/tenis/delete/${id}`, {
+        method: 'DELETE',
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Resposta do servidor:', data);
+          form.reset();
+          location.reload();
+        })
+        .catch(error => {
+          console.error('Erro ao remover o ID:', error);
+        });
+    }
+
+    // Adiciona um listener para o evento de submit do formulário
+    const removeForm = document.getElementById('removeForm');
+    removeForm.addEventListener('submit', removeID);
+
+    function getTenis() {
+    fetch('/tenis')
+      .then(response => response.json())
+      .then(data => {
+        const tenisContainer = document.getElementById('tenisContainer');
+        tenisContainer.innerHTML = '';
+
+        data.tenis.forEach(tenis => {
+          // Cria um card para cada tênis
+          const card = document.createElement('div');
+          card.classList.add('tenis-card'); // Adicione uma classe para estilizar o card
+
+          // Conteúdo do card
+          const name = document.createElement('p');
+          name.textContent = tenis.name;
+          card.appendChild(name);
+
+          const marca = document.createElement('p');
+          marca.textContent = `Marca: ${tenis.marca}`;
+          card.appendChild(marca);
+
+          const tamanho = document.createElement('p');
+          tamanho.textContent = `Tamanho: ${tenis.tamanho}`;
+          card.appendChild(tamanho);
+
+          const nivel = document.createElement('p');
+          nivel.textContent = `Nível: ${tenis.nivel}`;
+          card.appendChild(nivel);
+
+          // Adiciona o card ao container
+          tenisContainer.appendChild(card);
+        });
+      })
+      .catch(error => {
+        console.error('Erro ao buscar os tênis:', error);
+      });
+  }
+    // Ao carregar a página, busca e exibe todos os tênis
+    document.addEventListener('DOMContentLoaded', function() {
+      getTenis();
+
+    });
+  </script>
+   <Style>
+    *{
+margin: 0;
+box-sizing: border-box;
+}
+.tenis-card {
+  border: 1px solid #A42424;
+  border-radius: 4px;
+  padding: 15px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  display: inline-block;
+  text-align: center; /* Centralizar o conteúdo horizontalmente */
+  width: 150px; /* Definir um tamanho fixo para os cards */
+  position: relative;
+  margin-top: 5%;
+  left: 15%;
+}
+
+.navbar {
+
+  width: 100%;
+    height: 60px;
+    background-color: #141414;
+    padding: 10px;
+}
+
+.navbar-content {
+display: flex;
+justify-content: space-between;
+}
+.buttons{
+padding: 5px;
+text-align: right;
+}
+.removeform{
+  position: relative;
+  margin-top: 5%;
+  margin-left: 40%;
+  border: #782B2B 1px solid;
+  height: 80%;
+  max-width: 20%;
+  padding: 10px;
+}
+.text{
+  font-family: "Grafiti", cursive;
+  color: #FFFFFF;
+  font-size: 28px;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .button {
+  display: inline-block;
+  padding: 10px 20px;
+  border: none;
+  background-color:#782B2B;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 30px;
+}
+
+.button:hover {
+  background-color: #782B2B;
+}
+
+.button:focus {
+  outline: none;
+}
+
+.button:active {
+  background-color: #782B2B;
+}
+
+  </Style>
+</body>
+</html>

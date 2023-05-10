@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="PT-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="/manifest.json">
+  <link src="/style.css" rel="stylesheet">
+  <title>CRUD de Tênis</title>
+</head>
+<body>
+
+<div class="navbar">
+  <div class="img" style="display: flex;" ><img src="tenis.png" style="max-width: 50px; max-height: 50px; margin-left: 2%;" alt="tenis logo"><p class="text">Sneakers</p></div>
+  <div class="buttons">
+    <button class="button" id="showform">Adicionar Tênis</button>
+    <a href="/remove"><button class="button" id="removeform" >Remover Tênis</button></a>
+    <a href="/update"><button class="button" id="editform" >Editar Tênis</button></a>
+  </div>
+</div>
+
+
+
+<div class="addforms" id="addforms">
+  <h2>Adicionar Tênis</h2>
+  <form id="addForm">
+    <label for="name">Nome:</label>
+    <input type="text" id="name" name="name">
+    <br>
+    <label for="marca">Marca:</label>
+    <input type="text" id="marca" name="marca">
+    <br>
+    <label for="tamanho">Tamanho:</label>
+    <input type="number" id="tamanho" name="tamanho">
+    <br>
+    <label for="nivel">Nível:</label>
+    <input type="text" id="nivel" name="nivel">
+    <br>
+    <button type="submit">Adicionar</button>
+  </form>
+</div>
+  <h2>Listagem dos tênis</h2>
+  <div class="cardstenis"  id="tenisContainer"></div>
+
+  <script>
+
+    // Função para buscar e exibir todos os tênis
+  function getTenis() {
+    fetch('/tenis')
+      .then(response => response.json())
+      .then(data => {
+        const tenisContainer = document.getElementById('tenisContainer');
+        tenisContainer.innerHTML = '';
+
+        data.tenis.forEach(tenis => {
+          // Cria um card para cada tênis
+          const card = document.createElement('div');
+          card.classList.add('tenis-card'); // Adicione uma classe para estilizar o card
+
+          // Conteúdo do card
+          const name = document.createElement('p');
+          name.textContent = tenis.name;
+          card.appendChild(name);
+
+          const marca = document.createElement('p');
+          marca.textContent = `Marca: ${tenis.marca}`;
+          card.appendChild(marca);
+
+          const tamanho = document.createElement('p');
+          tamanho.textContent = `Tamanho: ${tenis.tamanho}`;
+          card.appendChild(tamanho);
+
+          const nivel = document.createElement('p');
+          nivel.textContent = `Nível: ${tenis.nivel}`;
+          card.appendChild(nivel);
+
+
+          // Adiciona o card ao container
+          tenisContainer.appendChild(card);
+        });
+      })
+      .catch(error => {
+        console.error('Erro ao buscar os tênis:', error);
+      });
+  }
+
+    // Função para adicionar um novo tênis
+    function addTenis(event) {
+      event.preventDefault();
+
+      const form = document.getElementById('addForm');
+      const name = form.name.value;
+      const marca = form.marca.value;
+      const tamanho = form.tamanho.value;
+      const nivel = form.nivel.value;
+
+      const newTenis = { name, marca, tamanho, nivel };
+
+      fetch('http://localhost:3000/tenis/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newTenis)
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Resposta do servidor:', data);
+          form.reset();
+          getTenis(); // Atualiza a lista de tênis após adicionar um novo
+        })
+        .catch(error => {
+          console.error('Erro ao adicionar o tênis:', error);
+        });
+    }
+
+    // Ao carregar a página, busca e exibe todos os tênis
+    document.addEventListener('DOMContentLoaded', function() {
+      getTenis();
+
+      // Adiciona um listener para o evento de submit do formulário
+      const addForm = document.getElementById('addForm');
+      addForm.addEventListener('submit', addTenis);
+    });
+
+    
+  
+
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js').then(function(registration) {
+      console.log('Service Worker registrado com sucesso:', registration.scope);
+      }).catch(function(error) {
+      console.log('Falha ao registrar o Service Worker:', error);
+      });
+    }
+    
+    </script>
+
+<style>
+  *{
+    margin: 0;
+    box-sizing: border-box;
+  }
+  .text{
+  font-family: "Grafiti", cursive;
+  color: #FFFFFF;
+  font-size: 28px;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  .navbar {
+    
+    width: 100%;
+    height: 60px;
+    background-color: #141414;
+    padding: 10px;
+  }
+
+  .navbar-content {
+    display: flex;
+    justify-content: space-between;
+  }
+ .buttons{
+  padding: 5px;
+  text-align: right;
+ }
+
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  border: none;
+  background-color:#782B2B;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 30px;
+}
+
+.button:hover {
+  background-color: #782B2B;
+}
+
+.button:focus {
+  outline: none;
+}
+
+.button:active {
+  background-color: #782B2B;
+}
+
+
+.cardstenis{
+  display: inline-block;
+  text-align: center;
+  margin-left: 20%;
+  margin-top: 5%;
+}
+  .tenis-card {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 15px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  display: inline-block;
+  text-align: center;
+  width: 150px; 
+  border: #A42424 1px solid;
+}
+
+  .addforms{
+    display: block;
+    position:absolute;
+    bottom: 20%;
+    left: 50%;
+  transform: translateX(-50%);
+    border: #A42424 1px solid;
+    padding: 10px 10px 10px;
+  }
+
+  .addforms label{
+    display: inline-block;
+    width: 70px;
+  }
+  .addforms input{
+    width: 200px;
+  }
+</style>
+</body>
+</html>

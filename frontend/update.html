@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+    <title>Document</title>
+</head>
+<body>
+
+    <div class="navbar">
+      <div class="img" style="display: flex;" ><img src="tenis.png" style="max-width: 50px; max-height: 50px; margin-left: 2%;" alt="tenis logo"><p class="text">Sneakers</p></div>
+      <div class="buttons">
+        <a href="/home"><button class="button" id="showform">Adicionar Tênis</button></a>
+        <a href="/remove"><button class="button" id="removeform" >Remover Tênis</button></a>
+        <a href="/update"><button class="button" id="editform">Editar Tênis</button></a>
+      </div>
+    </div>
+<div class="updateforms">
+    <form id="updateForm">
+        <label for="id">ID:</label>
+        <input type="text" id="id" name="id" style="margin-bottom: 10px;">
+        <br>
+        <label for="name">Nome:</label>
+        <input type="text" id="name" name="name" style="margin-bottom: 10px;">
+        <br>
+        <label for="marca">Marca:</label>
+        <input type="text" id="marca" name="marca" style="margin-bottom: 10px;">
+        <br>
+        <label for="tamanho">Tamanho:</label>
+        <input type="number" id="tamanho" name="tamanho" style="margin-bottom: 10px;">
+        <br>
+        <label for="nivel">Nível:</label>
+        <input type="text" id="nivel" name="nivel" style="margin-bottom: 10px;">
+        <br>
+        <button type="submit" onclick="updateTenis(event)">Atualizar</button>
+      </form>
+    </div>     
+      <script>
+        function updateTenis(event) {
+          event.preventDefault();
+      
+          const form = document.getElementById('updateForm');
+          const id = form.id.value;
+          
+          if (id === "") {
+            alert("Preencha o campo de ID com algum valor");
+            return;
+          }
+      
+          const name = form.name.value;
+          const marca = form.marca.value;
+          const tamanho = form.tamanho.value;
+          const nivel = form.nivel.value;
+      
+          const newTenis = { name, marca, tamanho, nivel };
+      
+          fetch(`http://localhost:3000/tenis/update/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newTenis)
+          })
+            .then(response => response.json())
+            .then(data => {
+              console.log('Resposta do servidor:', data);
+              form.reset();
+              alert('ID Alterado com sucesso')
+            })
+            .catch(error => {
+              console.error('Erro ao adicionar o tênis:', error);
+              alert('Erro ao tentar alterar o ID')
+            });
+        }
+      
+        const updateForm = document.getElementById('updateForm');
+        updateForm.addEventListener('submit', updateTenis);
+      </script>
+      
+          
+        <Style>
+                    *{
+              margin: 0;
+              box-sizing: border-box;
+            }
+
+            .navbar {
+              width: 100%;
+              height: 60px;
+              background-color: #141414;
+              padding: 10px;
+            }
+
+            .navbar-content {
+              display: flex;
+              justify-content: space-between;
+            }
+          .buttons{
+            padding: 5px;
+            text-align: right;
+          }
+
+          .updateforms{
+    display: block;
+    position:absolute;
+    bottom: 20%;
+    left: 50%;
+  transform: translateX(-50%);
+    border: #A42424 1px solid;
+    padding: 80px 25px 80px;
+  }
+  .updateforms label{
+    display: inline-block;
+    width: 70px;
+  }
+  .updateforms input{
+    width: 200px;
+  }
+  .text{
+  font-family: "Grafiti", cursive;
+  color: #FFFFFF;
+  font-size: 28px;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .button {
+  display: inline-block;
+  padding: 10px 20px;
+  border: none;
+  background-color:#782B2B;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 30px;
+}
+
+.button:hover {
+  background-color: #782B2B;
+}
+
+.button:focus {
+  outline: none;
+}
+
+.button:active {
+  background-color: #782B2B;
+}
+
+
+.cardstenis{
+  display: inline-block;
+  text-align: center;
+  margin-left: 20%;
+  margin-top: 5%;
+}
+
+        </Style>
+      
+
+</body>
+</html>
